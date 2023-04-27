@@ -1,23 +1,3 @@
-# S3
-variable "application_name" {
-  description = "The name of application where GCP resources relate"
-  type        = string
-  default     = "science_platform"
-}
-
-
-variable "bucket_name" {
-  description = "The name of bucket"
-  type        = string
-}
-
-variable "environment_label" {
-  description = "Labels for environment"
-  type        = string
-}
-
-# Database
-
 variable "db_name" {
   description = "The name of the SQL Database instance"
   default     = "example-postgresql"
@@ -56,10 +36,10 @@ variable "instance_class" {
 variable "user_name" {
   description = "The name of the default user"
   type        = string
+  default     = "rubin"
 }
 
 variable "password" {
   description = "Default user password"
   type        = string
 }
-
