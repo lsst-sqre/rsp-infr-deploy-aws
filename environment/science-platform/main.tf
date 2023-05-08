@@ -16,4 +16,10 @@ module "rsp-db" {
   password         = var.password
 }
 
+module "vpc" {
+  source            = "../../modules/vpc"
+  environment_label = var.environment_label
+}
+
+
 
