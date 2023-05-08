@@ -9,4 +9,4 @@ disk_size        = 10
 database_type    = "postgres"
 database_version = "14.7"
 instance_class   = "db.t3.micro"
-username         = "rubin"
+user_name        = "rubin"
