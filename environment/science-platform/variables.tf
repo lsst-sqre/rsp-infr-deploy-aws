@@ -63,3 +63,16 @@ variable "password" {
   type        = string
 }
 
+# EKS
+
+variable "k8s_version" {
+  description = "kubernetes version"
+  type        = string
+}
+
+variable "node_group_instance_type" {
+  description = "instance type for node group"
+  type        = string
+}
+
+

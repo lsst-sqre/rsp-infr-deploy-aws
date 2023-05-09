@@ -21,5 +21,13 @@ module "vpc" {
   environment_label = var.environment_label
 }
 
+module "eks" {
+  source                   = "../../modules/eks"
+  k8s_version              = var.k8s_version
+  vpc_id                   = module.vpc.vpc_name
+  private_subnets          = module.vpc.private_subnets
+  node_group_instance_type = var.node_group_instance_type
+  environment_label        = var.environment_label
+}
 
 
