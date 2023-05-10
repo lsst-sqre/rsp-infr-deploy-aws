@@ -30,20 +30,20 @@ module "eks" {
   }
 
   eks_managed_node_groups = {
-    #blue = {}
-    green = {
-      min_size     = 1
-      max_size     = 10
-      desired_size = 1
+    rsp = {
+      min_size     = var.node_group_min_size
+      max_size     = var.node_group_max_size
+      desired_size = var.node_group_size
 
       instance_types = [var.node_group_instance_type]
-      capacity_type  = "SPOT"
+      capacity_type  = var.node_group_capacity_type
     }
   }
 
   # aws-auth configmap
-  manage_aws_auth_configmap = true
+  manage_aws_auth_configmap = false
 
+  /*
   aws_auth_roles = [
     {
       rolearn  = "arn:aws:iam::66666666666:role/role1"
@@ -51,24 +51,7 @@ module "eks" {
       groups   = ["system:masters"]
     },
   ]
-
-  aws_auth_users = [
-    {
-      userarn  = "arn:aws:iam::66666666666:user/user1"
-      username = "user1"
-      groups   = ["system:masters"]
-    },
-    {
-      userarn  = "arn:aws:iam::66666666666:user/user2"
-      username = "user2"
-      groups   = ["system:masters"]
-    },
-  ]
-
-  aws_auth_accounts = [
-    "777777777777",
-    "888888888888",
-  ]
+*/
 
   tags = {
     Environment = var.environment_label
