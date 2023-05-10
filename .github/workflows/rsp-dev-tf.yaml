@@ -1,5 +1,5 @@
 # Deploys QServ Integration GKE with Terraform
-name: 'RSP DEV'
+name: 'RSP DEV TERRAFORM'
 
 on:
   pull_request:
