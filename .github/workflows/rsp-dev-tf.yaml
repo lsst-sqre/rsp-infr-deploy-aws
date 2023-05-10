@@ -40,7 +40,7 @@ jobs:
     # Generates an execution plan for terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -var-file=env/dev.tfvars -no-color
+      run: terraform plan -var-file=env/dev.tfvars --var ${{ secrets.DB_PASSWORD }} -no-color
 
     # On push to main, build or change infrastructure according to terraform configuration files
     - name: Terraform Apply
