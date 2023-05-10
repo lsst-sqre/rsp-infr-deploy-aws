@@ -21,4 +21,4 @@ node_group_capacity_type = "SPOT"
 
 
 # Increase this number to force Terraform to update the dev environment.
-# Serial: 2
+# Serial: 3
