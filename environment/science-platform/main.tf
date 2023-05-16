@@ -21,20 +21,3 @@ module "vpc" {
   environment_label = var.environment_label
 }
 
-module "eks" {
-  depends_on = [module.vpc]
-
-  source                   = "../../modules/eks"
-  k8s_version              = var.k8s_version
-  eks_cluster_name         = var.eks_cluster_name
-  vpc_id                   = module.vpc.vpc_id
-  private_subnets          = module.vpc.private_subnets
-  node_group_min_size      = var.node_group_min_size
-  node_group_max_size      = var.node_group_max_size
-  node_group_size          = var.node_group_size
-  node_group_instance_type = var.node_group_instance_type
-  node_group_capacity_type = var.node_group_capacity_type
-  environment_label        = var.environment_label
-}
-
-
