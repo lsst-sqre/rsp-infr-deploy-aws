@@ -1,7 +1,14 @@
-name: 'RSP Dev Terraform Destroy'
+name: 'RSP Prod Terraform'
 
 on:
-  workflow_dispatch:
+  pull_request:
+    paths:
+      - 'environment/science-platform/env/prod.tfvars'
+  push:
+    branches:
+      - main
+    paths:
+      - 'environment/science-platform/env/prod.tfvars'
 
 jobs:
   terraform:
@@ -27,22 +34,23 @@ jobs:
 
      # Initialize a new or existing terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
     - name: Terraform Init
-      run: terraform init -backend-config=bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} -backend-config=prefix=rsp/dev
+      run: terraform init -backend-config=bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} -backend-config=prefix=rsp/prod
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # Generates an execution plan for terraform
-    - name: Terraform Plan Destroy
+    - name: Terraform Plan
       id: plan
-      run: terraform plan -destroy -var-file=env/dev.tfvars --var=password=${{ secrets.DB_PASSWORD }} -no-color
+      run: terraform plan -var-file=env/prod.tfvars --var=password=${{ secrets.DB_PASSWORD }} -no-color
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
 
     # On push to main, build or change infrastructure according to terraform configuration files
-    - name: Terraform Destroy
-      run: terraform destroy -var-file=env/dev.tfvars -refresh=false -auto-approve
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file=env/prod.tfvars -refresh=false -auto-approve
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
