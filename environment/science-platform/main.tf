@@ -16,13 +16,14 @@ module "rsp-db" {
   password         = var.password
 }
 
+/*
 module "vpc" {
   source            = "../../modules/vpc"
   environment_label = var.environment_label
 }
+*/
 
 module "eks" {
-  depends_on = [module.vpc]
 
   source                   = "../../modules/eks"
   k8s_version              = var.k8s_version
