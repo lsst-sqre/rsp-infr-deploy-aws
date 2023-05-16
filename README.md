@@ -15,6 +15,6 @@ The [modules](./modules) directory is where the blueprints of the infrastructure
 
 # Connecting to an EKS Cluster
 
-First time enter `aws configure`.
+First time enter `aws configure`
 
 `aws eks update-kubeconfig --region us-east1 --name rsp-eks-1` to connect to an EKS cluster.  Replace cluster name and region.
