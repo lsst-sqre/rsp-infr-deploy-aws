@@ -2,8 +2,12 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
 
-  vpc_id_var          = module.vpc.vpc_id
-  private_subnets_var = module.vpc.private_subnets
+  locals {
+    vpc_id_var          = module.vpc.vpc_id
+    private_subnets_var = module.vpc.private_subnets
+
+  }
+
 
   cluster_name    = var.eks_cluster_name
   cluster_version = var.k8s_version
@@ -22,9 +26,9 @@ module "eks" {
     }
   }
 
-  vpc_id                   = var.vpc_id_var
-  subnet_ids               = var.private_subnets_var
-  control_plane_subnet_ids = var.private_subnets_var
+  vpc_id                   = local.vpc_id_var
+  subnet_ids               = local.private_subnets_var
+  control_plane_subnet_ids = local.private_subnets_var
 
 
   # EKS Managed Node Group(s)
