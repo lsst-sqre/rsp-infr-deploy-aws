@@ -42,7 +42,7 @@ jobs:
 
     # On push to main, build or change infrastructure according to terraform configuration files
     - name: Terraform Destroy
-      run: terraform destroy -var-file=env/dev.tfvars -refresh=false -auto-approve
+      run: terraform destroy -var-file=env/dev.tfvars --var=password=${{ secrets.DB_PASSWORD }} -refresh=false -auto-approve
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
