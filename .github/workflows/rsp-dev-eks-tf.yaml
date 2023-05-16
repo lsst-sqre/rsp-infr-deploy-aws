@@ -1,0 +1,56 @@
+name: 'RSP Dev EKS Terraform'
+
+on:
+  pull_request:
+    paths:
+      - 'environment/science-platform/env/dev-eks.tfvars'
+  push:
+    branches:
+      - main
+    paths:
+      - 'environment/science-platform/env/dev-eks.tfvars'
+
+jobs:
+  terraform:
+    name: 'Terraform'
+    runs-on: ubuntu-latest
+
+    # Use the Bash shell regardless whether the GitHub Actions runner is ubuntu-latest, macos-latest, or windows-latest
+    defaults:
+      run:
+        shell: bash
+        working-directory: ./environment/science-platform/eks
+
+    # Checkout the repository to the GitHub Actions runner
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    # Installs terraform
+    - name: Setup Terraform
+      uses: hashicorp/setup-terraform@v1
+      with:
+        terraform_version: 1.2.1
+
+     # Initialize a new or existing terraform working directory by creating initial files, loading any remote state, downloading modules, etc.
+    - name: Terraform Init
+      run: terraform init -backend-config=bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} -backend-config=key=rsp/dev/eks -backend-config=region=us-east-1
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # Generates an execution plan for terraform
+    - name: Terraform Plan
+      id: plan
+      run: terraform plan -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_state_key=us-east1 -no-color
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+
+    # On push to main, build or change infrastructure according to terraform configuration files
+    - name: Terraform Apply
+      if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+      run: terraform apply -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_state_key=us-east1 -refresh=false -auto-approve
+      env:
+        AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
