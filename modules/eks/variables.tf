@@ -47,3 +47,13 @@ variable "environment_label" {
   description = "Labels for environment"
   type        = string
 }
+
+variable "vpc_id_var" {
+  description = "vpc_id"
+  type        = string
+}
+
+variable "private_subnet_var" {
+  description = "private subnet"
+  type        = string
+}
