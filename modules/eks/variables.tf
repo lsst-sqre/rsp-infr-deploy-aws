@@ -3,6 +3,10 @@ variable "k8s_version" {
   type        = string
 }
 
+variable "eks_cluster_name" {
+  description = "eks cluster name"
+  type        = string
+}
 
 variable "vpc_id" {
   description = "vpc id"

@@ -70,6 +70,12 @@ variable "k8s_version" {
   type        = string
 }
 
+variable "eks_cluster_name" {
+  description = "eks cluster name"
+  type        = string
+}
+
+
 variable "node_group_min_size" {
   description = "min size of node group"
   type        = number

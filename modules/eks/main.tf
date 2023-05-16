@@ -2,7 +2,7 @@ module "eks" {
   source  = "terraform-aws-modules/eks/aws"
   version = "~> 19.0"
 
-  cluster_name    = "rsp-cluster"
+  cluster_name    = var.eks_cluster_name
   cluster_version = var.k8s_version
 
   cluster_endpoint_public_access = true
@@ -42,16 +42,6 @@ module "eks" {
 
   # aws-auth configmap
   manage_aws_auth_configmap = false
-
-  /*
-  aws_auth_roles = [
-    {
-      rolearn  = "arn:aws:iam::66666666666:role/role1"
-      username = "role1"
-      groups   = ["system:masters"]
-    },
-  ]
-*/
 
   tags = {
     Environment = var.environment_label
