@@ -22,6 +22,8 @@ module "vpc" {
 }
 
 module "eks" {
+  depends_on = [module.vpc]
+
   source                   = "../../modules/eks"
   k8s_version              = var.k8s_version
   eks_cluster_name         = var.eks_cluster_name
