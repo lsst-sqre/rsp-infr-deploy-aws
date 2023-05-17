@@ -42,7 +42,7 @@ jobs:
     # Generates an execution plan for terraform
     - name: Terraform Plan
       id: plan
-      run: terraform plan -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_state_key=us-east1 -no-color
+      run: terraform plan -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_bucket_region=us-east-1 -no-color
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
@@ -50,7 +50,7 @@ jobs:
     # On push to main, build or change infrastructure according to terraform configuration files
     - name: Terraform Apply
       if: github.ref == 'refs/heads/main' && github.event_name == 'push'
-      run: terraform apply -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_state_key=us-east1 -refresh=false -auto-approve
+      run: terraform apply -var-file=../env/dev-eks.tfvars --var=terraform_state_bucket=${{ secrets.TERRAFORM_STATE_BUCKET }} --var=terraform_state_key=rsp/dev --var=terraform_bucket_region=us-east-1 -refresh=false -auto-approve
       env:
         AWS_ACCESS_KEY_ID:  ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY:  ${{ secrets.AWS_SECRET_ACCESS_KEY }}
