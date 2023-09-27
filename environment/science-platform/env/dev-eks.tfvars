@@ -8,4 +8,4 @@ node_group_instance_type = "t3.large"
 node_group_capacity_type = "SPOT"
 environment_label        = "dev"
 
-# Serial: 15
+# Serial: 16
